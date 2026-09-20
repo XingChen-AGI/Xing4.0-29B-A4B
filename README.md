@@ -115,13 +115,13 @@ print(answer)
 > [!NOTE]
 > Xing4.0 model support has been submitted to the following inference frameworks via pull requests, which are currently under review and **not yet merged into their main branches**. Before the PRs are merged, please install from the corresponding PR branch to enable Xing4.0 support.
 >
-> | Framework | Pull Request | Status |
-> |-----------|-------------|--------|
-> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | Pending |
-> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | Pending |
-> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending |
-> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | Pending |
-> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending |
+> | Framework | Pull Request | Status | Commit Hash |
+> |-----------|-------------|--------|----------------|
+> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | Pending | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
+> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | Pending | 25aa52a29131753c10e56528d3fa0c4464cead63 |
+> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
+> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | Pending | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
+> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
 #### vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput, low-latency LLM inference and serving engine that provides an OpenAI-compatible API out of the box.

@@ -165,13 +165,13 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > [!NOTE]
 > Xing4.0 模型的适配代码已向以下推理框架提交 Pull Request，目前**尚未合入主分支**。在 PR 合入之前，请从对应 PR 分支安装以启用 Xing4.0 支持。
 >
-> | 框架 | Pull Request | 状态 |
-> |------|-------------|------|
-> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | 待合入 |
-> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | 待合入 |
-> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入 |
-> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | 待合入 |
-> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入 |
+> | 框架 | Pull Request | 状态 | commit hash |
+> |------|-------------|------|----------------|
+> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | 待合入 | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
+> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | 待合入 | 25aa52a29131753c10e56528d3fa0c4464cead63 |
+> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入 | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
+> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | 待合入 | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
+> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入 | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
 
 
 #### vLLM

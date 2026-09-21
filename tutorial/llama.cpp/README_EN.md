@@ -59,9 +59,7 @@ D:\xing4_0-llama-pc-deploy\
   ├── cublas64_13.dll
   ├── cublasLt64_13.dll
   ├── run-server.bat
-  ├── xing4_0-29b-IQ4_NL-00001-of-00003.gguf ← place here
-  ├── xing4_0-29b-IQ4_NL-00002-of-00003.gguf ← place here
-  ├── xing4_0-29b-IQ4_NL-00003-of-00003.gguf ← place here
+  ├── xing4_0-29b-IQ4_NL.gguf ← place here
 ```
 Step 3: Double-click to launch
 Double-click run-server.bat. A command-line window will appear showing startup logs, then the browser will automatically open the chat page.
@@ -74,7 +72,7 @@ The browser address bar will automatically jump to the corresponding server, and
 ### 2.4 Custom Parameters
 Open run-server.bat with Notepad and modify the parameter values at the top of the file — no need to touch the launch logic below:
 ```
-set MODEL=xing4_0-29b-IQ4_NL-00001-of-00003.gguf   rem model filename
+set MODEL=xing4_0-29b-IQ4_NL.gguf              rem model filename
 set NGL=999                                    rem GPU layers (0 = CPU only)
 set CTX=65536                                  rem context length
 set NTOKENS=8192                               rem max generated tokens

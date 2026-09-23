@@ -172,11 +172,23 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入 | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
 > | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | 待合入 | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
 > | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入 | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
+>
+> 为方便快速部署，我们同时提供了已集成对应 PR 的预编译 Docker 镜像，无需自行从源码编译：
+>
+> | 框架 | 预编译镜像 |
+> |------|-----------|
+> | vLLM | `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` |
+> | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
+>
+> 推荐通过以下文档使用镜像完成部署：[vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
 
 
 #### vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) 是高吞吐、低延迟的 LLM 推理与服务引擎，可一键启动 OpenAI 兼容的 API 服务。
+
+> [!TIP]
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md)。
 
 
 ```shell
@@ -199,6 +211,9 @@ vllm serve ${MODEL_PATH} \
 #### SGLang
 
 [SGLang](https://github.com/sgl-project/sglang) 是面向大语言模型与视觉语言模型的高性能服务框架。
+
+> [!TIP]
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \

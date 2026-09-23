@@ -122,9 +122,22 @@ print(answer)
 > | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
 > | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | Pending | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
 > | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
+>
+> For quick deployment, we also provide prebuilt Docker images that already integrate the corresponding PRs, so no source build is required:
+>
+> | Framework | Prebuilt Image |
+> |-----------|----------------|
+> | vLLM | `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` |
+> | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
+>
+> We recommend deploying with these images following: [vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
+
 #### vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput, low-latency LLM inference and serving engine that provides an OpenAI-compatible API out of the box.
+
+> [!TIP]
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md).
 
 ```shell
 vllm serve ${MODEL_PATH} \
@@ -146,6 +159,9 @@ Once launched, the OpenAI-compatible API is available at `http://localhost:8000/
 #### SGLang
 
 [SGLang](https://github.com/sgl-project/sglang) is a high-performance serving framework for large language models and vision-language models.
+
+> [!TIP]
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \

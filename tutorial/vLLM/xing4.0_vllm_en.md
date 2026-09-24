@@ -4,7 +4,7 @@
 
 - Pulling the prebuilt image
 - Downloading the Xing4.0-29B-A4B model
-- Starting the vLLM service with a single Docker command
+- Deploying the vLLM service with Docker
 - OpenAI-compatible API call examples
 - Startup parameter descriptions and inference parameter recommendations
 
@@ -59,7 +59,9 @@ modelscope download \
 
 ## Start the vLLM Service
 
-　　Start the vLLM service with Docker, mounting the local model directory into the container and exposing the API port:
+　　Deploying with Docker is a two-step process: first start the container, then run the vLLM startup script inside it.
+
+　　Step 1: start the container (using bash as the entrypoint and keeping it running), mounting the local model directory and exposing the API port:
 
 ```bash
 docker run -d \
@@ -67,9 +69,16 @@ docker run -d \
   --gpus all \
   --shm-size 16g \
   -p 8000:8000 \
+  --entrypoint /bin/bash \
   -v /yourpath/models/Xing4.0-29B-A4B:/models/Xing4.0-29B-A4B \
   quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0 \
-  vllm serve /models/Xing4.0-29B-A4B \
+  -c "sleep infinity"
+```
+
+　　Step 2: enter the container and run the following command to launch the vLLM service; logs are streamed directly to the current terminal:
+
+```bash
+vllm serve /models/Xing4.0-29B-A4B \
     --host 0.0.0.0 \
     --port 8000 \
     --served-model-name Xing4.0-29B-A4B \
@@ -77,19 +86,14 @@ docker run -d \
     --trust-remote-code \
     --max-model-len 262144 \
     --gpu-memory-utilization 0.90 \
-    --max-num-seqs 32 \
-    --reasoning-parser xing4 \
-    --tool-call-parser xing4 \
+    --max-num-seqs 4 \
+    --reasoning-parser xing4_0 \
+    --tool-call-parser xing4_0 \
+    --enable-auto-tool-choice \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
 ```
 
-　　After startup, the OpenAI-compatible API is available at `http://localhost:8000/v1`. Check the startup logs to confirm that the service is ready:
-
-```bash
-docker logs -f xing4-vllm
-```
-
-　　When a message similar to `Uvicorn running on http://0.0.0.0:8000` appears in the logs, the service is ready to accept requests.
+　　After startup, the OpenAI-compatible API is available at `http://localhost:8000/v1`. The service logs are streamed to the current terminal continuously; when a message similar to `Uvicorn running on http://0.0.0.0:8000` appears, the service is ready to accept requests.
 
 ### Startup Parameter Descriptions
 
@@ -102,9 +106,10 @@ docker logs -f xing4-vllm
 | `--trust-remote-code` | Trust remote code shipped inside the model repository |
 | `--max-model-len 262144` | Maximum context length; Xing4.0 natively supports 256K |
 | `--gpu-memory-utilization 0.90` | Upper limit of the fraction of GPU memory to reserve; adjust according to available headroom |
-| `--max-num-seqs 32` | Maximum number of concurrent requests |
-| `--reasoning-parser xing4` | Parses the chain-of-thought output of Xing4.0 (the reasoning process comes before `</think>`) |
-| `--tool-call-parser xing4` | Parses the tool-call format of Xing4.0 |
+| `--max-num-seqs 4` | Maximum number of concurrent requests |
+| `--reasoning-parser xing4_0` | Parses the chain-of-thought output of Xing4.0 (the reasoning process comes before `</think>`) |
+| `--tool-call-parser xing4_0` | Parses the tool-call format of Xing4.0 |
+| `--enable-auto-tool-choice` | Enables automatic tool choice (function calling); required when the request contains the `tools` parameter |
 | `--speculative-config` | Enables MTP speculative decoding to accelerate generation |
 
 ## Calling the API
@@ -127,8 +132,6 @@ curl http://localhost:8000/v1/chat/completions \
     "chat_template_kwargs":{"enable_thinking":true},"skip_special_tokens": false
   }'
 ```
-
-　　Because the `xing4` reasoning parser is enabled, `message.reasoning_content` in the response contains the chain-of-thought content, while `message.content` contains the final answer.
 
 ## Inference Parameter Recommendations
 

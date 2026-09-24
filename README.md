@@ -10,23 +10,28 @@
 
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
+    - [Xing4.0](#xing40)
 - [News](#news)
 - [Model](#model)
 - [Evaluation](#evaluation)
 - [Quickstart](#quickstart)
-  - [Local Inference](#local-inference)
-  - [Serving](#serving)
-    - [vLLM](#vllm)
-    - [SGLang](#sglang)
-    - [KTransformers](#ktransformers)
-  - [Recommended Parameters](#recommended-parameters)
+    - [Local Inference](#local-inference)
+    - [Serving](#serving)
+      - [vLLM](#vllm)
+      - [SGLang](#sglang)
+      - [KTransformers](#ktransformers)
+    - [Recommended Parameters](#recommended-parameters)
+      - [Xing4.0-29B-A4B Inference Parameters](#xing40-29b-a4b-inference-parameters)
 - [Fine-tuning](#fine-tuning)
-  - [LLaMA-Factory](#llama-factory)
-  - [MindFormers](#mindformers)
-  - [FlagOS](#flagos)
+    - [LLaMA-Factory](#llama-factory)
+    - [MindFormers](#mindformers)
+    - [FlagOS](#flagos)
 - [Acknowledgments](#acknowledgments)
-- [Disclaimer, License & Citation](#disclaimer-license--citation)
+- [Disclaimer, License \& Citation](#disclaimer-license--citation)
+    - [Disclaimer](#disclaimer)
+    - [Citation](#citation)
 
 
 # Introduction
@@ -149,9 +154,10 @@ vllm serve ${MODEL_PATH} \
     --trust-remote-code \
     --max-model-len 262144 \
     --gpu-memory-utilization 0.90 \
-    --max-num-seqs 32 \
-    --reasoning-parser xing4 \
-    --tool-call-parser xing4 \
+    --max-num-seqs 4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser xing4_0 \
+    --tool-call-parser xing4_0 \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
 ```
 
@@ -162,7 +168,7 @@ Once launched, the OpenAI-compatible API is available at `http://localhost:8000/
 [SGLang](https://github.com/sgl-project/sglang) is a high-performance serving framework for large language models and vision-language models.
 
 > [!TIP]
-> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and deploy the service with Docker. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \
@@ -173,9 +179,9 @@ sglang serve --model-path ${MODEL_PATH} \
    --tp-size 2 \
    --context-length 262144 \
    --mem-fraction-static 0.90 \
-   --max-running-requests 32 \
-   --reasoning-parser xing4 \
-   --tool-call-parser xing4 \
+   --max-running-requests 4 \
+   --reasoning-parser xing4_0 \
+   --tool-call-parser xing4_0 \
    --speculative-algorithm EAGLE
 ```
 

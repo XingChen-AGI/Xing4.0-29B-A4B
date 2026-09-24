@@ -10,23 +10,28 @@
 
 # 目录
 
+- [目录](#目录)
 - [介绍](#介绍)
+    - [星辰语义大模型-Xing4.0](#星辰语义大模型-xing40)
 - [最新动态](#最新动态)
 - [模型](#模型)
 - [能力评估](#能力评估)
 - [快速开始](#快速开始)
-  - [本地推理](#本地推理)
-  - [服务化推理](#服务化推理)
-    - [vLLM](#vllm)
-    - [SGLang](#sglang)
-    - [KTransformers](#ktransformers)
-  - [超参选择](#超参选择)
+    - [本地推理](#本地推理)
+    - [服务化推理](#服务化推理)
+      - [vLLM](#vllm)
+      - [SGLang](#sglang)
+      - [KTransformers](#ktransformers)
+    - [超参选择](#超参选择)
+      - [Xing4.0-29B-A4B 模型推理参数选择](#xing40-29b-a4b-模型推理参数选择)
 - [微调](#微调)
-  - [LLaMA-Factory](#llama-factory)
-  - [MindFormers](#mindformers)
-  - [FlagOS](#flagos)
+    - [LLaMA-Factory](#llama-factory)
+    - [MindFormers](#mindformers)
+    - [FlagOS](#flagos)
 - [致谢](#致谢)
 - [声明、协议、引用](#声明协议引用)
+    - [声明](#声明)
+    - [引用](#引用)
 
 
 # 介绍
@@ -201,9 +206,10 @@ vllm serve ${MODEL_PATH} \
     --trust-remote-code \
     --max-model-len 262144 \
     --gpu-memory-utilization 0.90 \
-    --max-num-seqs 32 \
-    --reasoning-parser xing4 \
-    --tool-call-parser xing4 \
+    --max-num-seqs 4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser xing4_0 \
+    --tool-call-parser xing4_0 \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
 ```
 
@@ -214,7 +220,7 @@ vllm serve ${MODEL_PATH} \
 [SGLang](https://github.com/sgl-project/sglang) 是面向大语言模型与视觉语言模型的高性能服务框架。
 
 > [!TIP]
-> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 部署服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \
@@ -225,9 +231,9 @@ sglang serve --model-path ${MODEL_PATH} \
    --tp-size 2 \
    --context-length 262144 \
    --mem-fraction-static 0.90 \
-   --max-running-requests 32 \
-   --reasoning-parser xing4 \
-   --tool-call-parser xing4 \
+   --max-running-requests 4 \
+   --reasoning-parser xing4_0 \
+   --tool-call-parser xing4_0 \
    --speculative-algorithm EAGLE
 ```
 

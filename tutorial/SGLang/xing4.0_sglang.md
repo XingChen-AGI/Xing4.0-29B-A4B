@@ -4,7 +4,7 @@
 
 - 预编译镜像拉取
 - Xing4.0-29B-A4B 模型下载
-- 通过 Docker 一键启动 SGLang 服务
+- 通过 Docker 部署 SGLang 服务
 - OpenAI 兼容 API 调用示例
 - 启动参数说明与推理参数建议
 
@@ -59,7 +59,9 @@ modelscope download \
 
 ## 启动 SGLang 服务
 
-　　通过 Docker 启动 SGLang 服务，将本地模型目录挂载进容器并暴露 API 端口：
+　　通过 Docker 部署分为两步：先启动容器，再在容器内执行 SGLang 启动脚本。
+
+　　第一步，启动容器（以 bash 作为入口点并保持运行），挂载本地模型目录并暴露 API 端口：
 
 ```bash
 docker run -d \
@@ -67,9 +69,16 @@ docker run -d \
   --gpus all \
   --shm-size 16g \
   -p 8000:8000 \
+  --entrypoint /bin/bash \
   -v /yourpath/models/Xing4.0-29B-A4B:/models/Xing4.0-29B-A4B \
   quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0 \
-  sglang serve --model-path /models/Xing4.0-29B-A4B \
+  -c "sleep infinity"
+```
+
+　　第二步，进入容器后执行以下命令启动 SGLang 服务，日志将直接输出到当前终端：
+
+```bash
+sglang serve --model-path /models/Xing4.0-29B-A4B \
     --trust-remote-code \
     --host 0.0.0.0 \
     --port 8000 \
@@ -77,19 +86,13 @@ docker run -d \
     --tp-size 2 \
     --context-length 262144 \
     --mem-fraction-static 0.90 \
-    --max-running-requests 32 \
-    --reasoning-parser xing4 \
-    --tool-call-parser xing4 \
+    --max-running-requests 4 \
+    --reasoning-parser xing4_0 \
+    --tool-call-parser xing4_0 \
     --speculative-algorithm EAGLE
 ```
 
-　　启动后通过 `http://localhost:8000/v1` 即可访问 OpenAI 兼容 API。查看启动日志确认服务就绪：
-
-```bash
-docker logs -f xing4-sglang
-```
-
-　　当日志中出现类似 `The server is fired up and ready to roll!` 的字样时，表示服务已对外可用。
+　　启动后通过 `http://localhost:8000/v1` 即可访问 OpenAI 兼容 API。当前终端会持续输出服务日志，当日志中出现类似 `The server is fired up and ready to roll!` 的字样时，表示服务已对外可用。
 
 ### 启动参数说明
 
@@ -103,9 +106,9 @@ docker logs -f xing4-sglang
 | `--trust-remote-code` | 信任模型仓库内的远程代码 |
 | `--context-length 262144` | 最大上下文长度，Xing4.0 原生支持 256K |
 | `--mem-fraction-static 0.90` | 静态显存占用比例上限，按显存余量调整 |
-| `--max-running-requests 32` | 最大并发请求数 |
-| `--reasoning-parser xing4` | 解析 Xing4.0 的思维链输出（`</think>` 之前为推理过程） |
-| `--tool-call-parser xing4` | 解析 Xing4.0 的工具调用格式 |
+| `--max-running-requests 4` | 最大并发请求数 |
+| `--reasoning-parser xing4_0` | 解析 Xing4.0 的思维链输出（`</think>` 之前为推理过程） |
+| `--tool-call-parser xing4_0` | 解析 Xing4.0 的工具调用格式 |
 | `--speculative-algorithm EAGLE` | 启用 EAGLE 投机解码以加速生成 |
 
 ## 调用 API
@@ -128,8 +131,6 @@ curl http://localhost:8000/v1/chat/completions \
     "chat_template_kwargs":{"enable_thinking":true},"skip_special_tokens": false
   }'
 ```
-
-　　由于启用了 `xing4` 推理解析器，返回结果中的 `message.reasoning_content` 为思维链内容，`message.content` 为最终回答。
 
 ## 推理参数建议
 

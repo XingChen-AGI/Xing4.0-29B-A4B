@@ -1,4 +1,4 @@
-# xing4_0 Inference Service Usage Guide
+# Xing4.0-29B-A4B Inference Service Usage Guide
 
 > Image: `harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0`
 > Scope: Deployment, startup, and testing of OpenAI-compatible inference services based on vLLM-Ascend
@@ -109,7 +109,7 @@ docker run -itd -u 0 --name xing4_0-vllm --net=host --privileged=true --shm-size
 > - This script is designed for **Ascend 910B2** environments and passes through `/dev/davinci0` ~ `/dev/davinci7` (a total of **8** NPUs). The service uses 2 of them via `--tensor-parallel-size 2`;
 > - `--net=host` uses the host network; the service port (`--port`, dspark=8000 / mtp=8009) binds directly to the host, so no `-p` port mapping is needed;
 > - `-u 0` runs as root; `--privileged=true` and `--shm-size=512g` are common settings for Ascend inference containers;
-> - Add `-v` mounts for business directories (e.g., weights) as needed;
+> - **Add `-v` mounts for business directories (e.g., weights) as needed;**
 > - `-e VLLM_USE_V1=1` enables the vLLM V1 execution engine.
 
 ---

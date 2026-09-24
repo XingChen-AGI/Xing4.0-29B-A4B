@@ -1,4 +1,4 @@
-# xing4_0 模型推理服务使用说明
+# Xing4.0-29B-A4B 模型推理服务使用说明
 
 > 适用镜像: `harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0`
 > 适用范围: 基于 vLLM-Ascend 的 OpenAI 兼容推理服务部署、启动与测试
@@ -109,7 +109,7 @@ docker run -itd -u 0 --name xing4_0-vllm --net=host --privileged=true --shm-size
 > - 本脚本适用于 **昇腾 910B2** 环境,透传 `/dev/davinci0` ~ `/dev/davinci7` 共 **8 张** NPU,服务通过 `--tensor-parallel-size 2` 使用其中 2 张;
 > - `--net=host` 使用宿主机网络,服务端口(`--port`,dspark=8000 / mtp=8009)直接绑定宿主机,无需 `-p` 端口映射;
 > - `-u 0` 以 root 运行;`--privileged=true` 与 `--shm-size=512g` 为昇腾推理容器常用配置;
-> - 权重等业务目录按实际环境按需添加 `-v` 挂载;
+> - **权重等业务目录按实际环境按需添加 `-v` 挂载;**
 > - `-e VLLM_USE_V1=1` 启用 vLLM V1 执行引擎。
 
 ---

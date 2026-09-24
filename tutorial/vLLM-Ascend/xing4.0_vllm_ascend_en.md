@@ -1,6 +1,6 @@
 # Xing4.0-29B-A4B Ascend Deployment Guide
 
-> Image: `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924`<br>
+> Image: `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0`<br>
 > Scope: Deployment, startup, and testing of OpenAI-compatible inference services based on vLLM-Ascend
 
 ---
@@ -22,7 +22,7 @@ Overall workflow:
 
 | Item | Content |
 | --- | --- |
-| Open-source image | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924` |
+| Open-source image | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 | Inference framework | vLLM-Ascend `v0.26.0rc1` |
 | Model scale | 29B (main model) |
 | Exposed service name | `xingchen4` (set via `--served-model-name`) |
@@ -46,7 +46,7 @@ This image comes with a vLLM-Ascend environment optimized for Xing4.0-29B-A4B, w
 ### 4.1 Pulling the Image
 
 ```bash
-docker pull quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
+docker pull quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0
 ```
 
 ### 4.2 Starting the Container (Reference Script)
@@ -100,7 +100,7 @@ docker run -itd -u 0 \
     --shm-size=512g \
     [--device and -v parameters as in the script above] \
     -e VLLM_USE_V1=1 \
-    -it quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924 \
+    -it quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0 \
     /bin/bash
 ```
 
@@ -400,7 +400,7 @@ docker run -itd -u 0 \
 Usage example:
 
 ```bash
-bash run_container.sh xing4_0-vllm quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
+bash run_container.sh xing4_0-vllm quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0
 ```
 
 ### Appendix B: dspark Startup Script `start_dspark.sh` (Optional)

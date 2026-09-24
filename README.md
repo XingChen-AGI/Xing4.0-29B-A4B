@@ -128,6 +128,7 @@ print(answer)
 > | Framework | Prebuilt Image |
 > |-----------|----------------|
 > | vLLM | `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` |
+> | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
 > We recommend deploying with these images following: [vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)

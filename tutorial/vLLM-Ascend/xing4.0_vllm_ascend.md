@@ -1,6 +1,6 @@
 # Xing4.0-29B-A4B 模型昇腾部署说明
 
-> 适用镜像: `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924`<br>
+> 适用镜像: `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0`<br>
 > 适用范围: 基于 vLLM-Ascend 的 OpenAI 兼容推理服务部署、启动与测试
 
 ---
@@ -22,7 +22,7 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 开源镜像 | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924` |
+| 开源镜像 | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 | 推理框架 | vLLM-Ascend `v0.26.0rc1` |
 | 模型规模 | 29B(主模型) |
 | 对外服务名 | `xingchen4`(由 `--served-model-name` 指定) |
@@ -46,7 +46,7 @@
 ### 4.1 拉取镜像
 
 ```bash
-docker pull quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
+docker pull quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0
 ```
 
 ### 4.2 启动容器(参考脚本)
@@ -100,7 +100,7 @@ docker run -itd -u 0 \
     --shm-size=512g \
     [--device 与 -v 参数同上方脚本] \
     -e VLLM_USE_V1=1 \
-    -it quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924 \
+    -it quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0 \
     /bin/bash
 ```
 
@@ -401,7 +401,7 @@ docker run -itd -u 0 \
 使用示例:
 
 ```bash
-bash run_container.sh xing4_0-vllm quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
+bash run_container.sh xing4_0-vllm quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0
 ```
 
 ### 附录 B:dspark 启动脚本 `start_dspark.sh`(可选)

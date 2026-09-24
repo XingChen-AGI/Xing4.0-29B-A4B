@@ -178,6 +178,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > | 框架 | 预编译镜像 |
 > |------|-----------|
 > | vLLM | `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` |
+> | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
 > 推荐通过以下文档使用镜像完成部署：[vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)

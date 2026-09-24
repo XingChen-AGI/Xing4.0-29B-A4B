@@ -1,17 +1,17 @@
-# Xing4.0-29B-A4B Inference Service Usage Guide
+# Xing4.0-29B-A4B Ascend Deployment Guide
 
-> Image: `harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0`
+> Image: `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924`<br>
 > Scope: Deployment, startup, and testing of OpenAI-compatible inference services based on vLLM-Ascend
 
 ---
 
 ## 1. Overview
 
-This document describes how to deploy the **Xing4.0** large language model using the vLLM-Ascend inference framework on Ascend NPU environments.
+This document describes how to deploy the **Xing4.0-29B-A4B** large language model using the vLLM-Ascend inference framework on Ascend NPU environments.
 
 Overall workflow:
 
-1. Load the image and start the container;
+1. Pull the image and start the container;
 2. Prepare the main model weights (draft model weights are only required for dspark speculative decoding mode);
 3. Start the OpenAI-compatible inference service (`/v1/completions` and other endpoints);
 4. Verify via `curl` or the OpenAI SDK.
@@ -22,43 +22,36 @@ Overall workflow:
 
 | Item | Content |
 | --- | --- |
-| Open-source image | `harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0` |
-| Offline image file | `/data01/workspace/lzx/llm/images/xing4_0-29b-v26.tar.gz` |
+| Open-source image | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924` |
 | Inference framework | vLLM-Ascend `v0.26.0rc1` |
 | Model scale | 29B (main model) |
 | Exposed service name | `xingchen4` (set via `--served-model-name`) |
 
-This image comes with a vLLM-Ascend environment optimized for Xing4.0, with several acceleration features enabled (see Section 7 for detailed startup parameters).
+This image comes with a vLLM-Ascend environment optimized for Xing4.0-29B-A4B, with several acceleration features enabled (see Section 7 for detailed startup parameters).
 
 ---
 
 ## 3. Environment and Resource Requirements
 
-- **Hardware**: Ascend **910B2** series NPUs, at least **2** cards (the startup script uses `--tensor-parallel-size 2` for 2-card tensor parallelism); the reference script passes through 8 cards (`/dev/davinci0` ~ `/dev/davinci7`), and the service uses any 2 of them as needed;
-- **Software**: The host must have Ascend driver CANN runtime compatible with the image installed, with `davinci` device nodes correctly mounted;
+- **Hardware**: Ascend **910B2** series NPU, at least **2** cards (the startup script uses `--tensor-parallel-size 2` for 2-card tensor parallelism); the reference script passes through 8 cards (`/dev/davinci0` ~ `/dev/davinci7`), and the service uses 2 of them as needed;
+- **Software**: The host must have the Ascend driver/CANN runtime compatible with the image installed, with `davinci` device nodes correctly mounted;
 - **Storage**:
   - Main model weights directory (`$weight_path` in the scripts), required for both startup modes;
-  - Draft model weights directory (only required for dspark speculative decoding): `/hpfs/huawei-2607/shangxt/Telecom-29B/telecom_80w_no_thinking_0910_8_8/checkpoints/checkpoint_best`. The mtp mode does not require a draft model; see Section 6.
+  - Draft model weights directory (only required for dspark speculative decoding); the mtp mode does not require a draft model; see Section 6.
 
 ---
 
 ## 4. Image Loading and Container Startup
 
-### 4.1 Loading the Offline Image
+### 4.1 Pulling the Image
 
 ```bash
-docker load -i /data01/workspace/lzx/llm/images/xing4_0-29b-v26.tar.gz
-```
-
-Confirm the image exists after loading:
-
-```bash
-docker images | grep vllm-ascend
+docker pull quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
 ```
 
 ### 4.2 Starting the Container (Reference Script)
 
-Ascend containers need NPU devices and the driver directory passed through. Reference script as follow (`$1` is the container name, `$2` is the image name):
+Ascend containers need NPU devices and the driver directory passed through. Reference script as follow. (`$1` is the container name, `$2` is the image name):
 
 ```bash
 docker run -itd -u 0 \
@@ -97,19 +90,25 @@ docker run -itd -u 0 \
     -it $2 /bin/bash
 ```
 
-Example (`$1` = container name, `$2` = image name):
+Usage example (`$1` = container name, `$2` = image name):
 
 ```bash
-docker run -itd -u 0 --name xing4_0-vllm --net=host --privileged=true --shm-size=512g \
-  [--device and -v parameters as in the script above] \
-  -e VLLM_USE_V1=1 -it harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0 /bin/bash
+docker run -itd -u 0 \
+    --name xing4_0-vllm \
+    --net=host \
+    --privileged=true \
+    --shm-size=512g \
+    [--device and -v parameters as in the script above] \
+    -e VLLM_USE_V1=1 \
+    -it quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924 \
+    /bin/bash
 ```
 
 > Notes:
 > - This script is designed for **Ascend 910B2** environments and passes through `/dev/davinci0` ~ `/dev/davinci7` (a total of **8** NPUs). The service uses 2 of them via `--tensor-parallel-size 2`;
 > - `--net=host` uses the host network; the service port (`--port`, dspark=8000 / mtp=8009) binds directly to the host, so no `-p` port mapping is needed;
 > - `-u 0` runs as root; `--privileged=true` and `--shm-size=512g` are common settings for Ascend inference containers;
-> - **Add `-v` mounts for business directories (e.g., weights) as needed;**
+> - **Add `-v` mounts for business directories such as weights as needed for your environment;**
 > - `-e VLLM_USE_V1=1` enables the vLLM V1 execution engine.
 
 ---
@@ -125,7 +124,7 @@ docker run -itd -u 0 --name xing4_0-vllm --net=host --privileged=true --shm-size
 2. **Draft model weights (only required for dspark mode, optional)**: If using dspark speculative decoding, verify the draft model directory exists and is readable:
 
    ```bash
-   ls /hpfs/huawei-2607/shangxt/Telecom-29B/telecom_80w_no_thinking_0910_8_8/checkpoints/checkpoint_best
+   ls /path/to/your_dspark_model
    ```
 
    > The mtp mode uses the MTP (Multi-Token Prediction) prediction head built into the main model, so no separate draft model weights are needed.
@@ -136,16 +135,18 @@ docker run -itd -u 0 --name xing4_0-vllm --net=host --privileged=true --shm-size
 
 The service supports two speculative decoding modes, **either one** can be chosen; both can also be omitted (removing `--speculative-config` disables speculative decoding — the service still infers normally, just with slightly lower throughput):
 
-| Mode | Speculative decoding method | Draft model required | Listening port | Log file |
+| Mode | Speculative decoding method | Draft model required? | Listening port | Log file |
 | --- | --- | --- | --- | --- |
-| Mode 1 | dspark (optional) | Yes | `8000` | `dspark-baseline-think.txt` |
-| Mode 2 | mtp | No (uses the main model's MTP prediction head) | `8009` | `mtp-9.txt` |
+| Mode 1 | dspark (optional) | Yes | `8000` | `dspark.log` |
+| Mode 2 | mtp | No (uses the main model's MTP prediction head) | `8009` | `mtp.log` |
 
 ### 6.1 Mode 1: dspark Speculative Decoding (Optional)
 
-> **dspark is optional**: it depends on an additional draft model. If not enabled, the service still runs normally, just with slightly lower throughput. If enabled, make sure the draft model weights are ready (see Section 5).
+> **dspark is optional**: it depends on an additional draft model. If not enabled, the service still runs normally, just with slightly lower throughput.<br>If you enable it, make sure the draft model weights are ready, and replace the `model` field in `--speculative-config` with your dspark draft model weights path (see Section 5).
 
 ```bash
+export weight_path="/path/to/your_main_model"
+
 nohup python -m vllm.entrypoints.openai.api_server \
     --model $weight_path \
     --port 8000 \
@@ -158,19 +159,31 @@ nohup python -m vllm.entrypoints.openai.api_server \
     --trust-remote-code \
     --gpu-memory-utilization 0.85 \
     --enable-prefix-caching \
-    --speculative-config '{"num_speculative_tokens": 7, "method": "dspark", "model":"/hpfs/huawei-2607/shangxt/Telecom-29B/telecom_80w_no_thinking_0910_8_8/checkpoints/checkpoint_best"}' \
-    --compilation-config '{"cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],"cudagraph_mode": "FULL_AND_PIECEWISE"}' \
-    --additional-config '{"enable_cpu_binding": true, "enable_dsa_cp": false, "multistream_overlap_shared_expert": true, "multistream_overlap_gate": true}' \
-    > dspark-baseline-think.txt 2>&1 &
+    --speculative-config '{
+        "num_speculative_tokens": 7,
+        "method": "dspark",
+        "model":"/path/to/your_draft_model"
+    }' \
+    --compilation-config '{
+        "cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],
+        "cudagraph_mode": "FULL_AND_PIECEWISE"
+    }' \
+    --additional-config '{
+        "enable_cpu_binding": true,
+        "enable_dsa_cp": false,
+        "multistream_overlap_shared_expert": true,
+        "multistream_overlap_gate": true
+    }' \
+> dspark.log 2>&1 &
 ```
-
-> ⚠️ Note: In the original script, there is a stray `i` at the end of the `--model $weight_path` line — a typo, please remove it or argument parsing will fail.
 
 ### 6.2 Mode 2: mtp Speculative Decoding
 
 > mtp (Multi-Token Prediction) uses the MTP prediction head of the main model itself; a single forward pass can predict multiple tokens, **no additional draft model is needed**, and no `model` field is required in `--speculative-config`.
 
 ```bash
+export weight_path="/path/to/your_main_model"
+
 nohup python -m vllm.entrypoints.openai.api_server \
     --model $weight_path \
     --port 8009 \
@@ -183,10 +196,21 @@ nohup python -m vllm.entrypoints.openai.api_server \
     --trust-remote-code \
     --gpu-memory-utilization 0.6 \
     --enable-prefix-caching \
-    --speculative-config '{"num_speculative_tokens": 2, "method": "mtp"}' \
-    --additional-config '{"enable_cpu_binding": true, "enable_dsa_cp": false, "multistream_overlap_shared_expert": true, "multistream_overlap_gate": true}' \
-    --compilation-config '{"cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],"cudagraph_mode": "FULL_AND_PIECEWISE"}' \
-    > mtp-9.txt 2>&1 &
+    --speculative-config '{
+        "num_speculative_tokens": 2,
+        "method": "mtp"
+    }' \
+    --additional-config '{
+        "enable_cpu_binding": true,
+        "enable_dsa_cp": false,
+        "multistream_overlap_shared_expert": true,
+        "multistream_overlap_gate": true
+    }' \
+    --compilation-config '{
+        "cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],
+        "cudagraph_mode": "FULL_AND_PIECEWISE"
+    }' \
+> mtp.log 2>&1 &
 ```
 
 ### 6.3 Parameter Differences Between the Two Modes
@@ -199,7 +223,6 @@ nohup python -m vllm.entrypoints.openai.api_server \
 | `--gpu-memory-utilization` | `0.85` | `0.6` |
 | `--speculative-config` | `method=dspark`, `num_speculative_tokens=7`, includes draft model `model` path | `method=mtp`, `num_speculative_tokens=2`, no draft model |
 | Draft model | Required | Not required |
-| Log file | `dspark-baseline-think.txt` | `mtp-9.txt` |
 
 All other parameters (model, service name, context length, prefix caching, graph capture and additional configs) are identical between the two modes.
 
@@ -207,16 +230,16 @@ All other parameters (model, service name, context length, prefix caching, graph
 
 ```bash
 # dspark mode
-tail -f dspark-baseline-think.txt
+tail -f dspark.log
 # mtp mode
-tail -f mtp-9.txt
+tail -f mtp.log
 ```
 
 When the log shows something like `Application startup complete` or the listening port information, the service is ready.
 
 ---
 
-## 7. Startup Parameter Explanation
+## 7. Detailed Startup Parameter Explanation
 
 ### 7.1 Basic Parameters
 
@@ -274,7 +297,7 @@ curl -X POST http://localhost:8000/v1/completions \
     }'
 ```
 
-> ⚠️ **Port consistency**: The test port must match the service's actual listening port — dspark mode is `8000`, mtp mode is `8009`. The example below uses `8000`; replace it with `8009` when using mtp mode.
+> ⚠️ **Port consistency**: The test port must match the service's actual listening port — dspark mode is `8000`, mtp mode is `8009`. The example above uses `8000`; replace it with `8009` when using mtp mode.
 
 Request body field description:
 
@@ -377,14 +400,14 @@ docker run -itd -u 0 \
 Usage example:
 
 ```bash
-bash run_container.sh xing4_0-vllm harbor.telecom-ai.com.cn/library/vllm-ascend:v0.26.0rc1-29b-xing4_0
+bash run_container.sh xing4_0-vllm quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-29b-xing4_0-0924
 ```
 
-### 10.2 dspark Startup Script `start_dspark.sh` (Optional)
+### Appendix B: dspark Startup Script `start_dspark.sh` (Optional)
 
 ```bash
 #!/bin/bash
-export weight_path=/models/xing4_0   # modify to match the actual weight path
+export weight_path="/path/to/your_main_model"
 
 nohup python -m vllm.entrypoints.openai.api_server \
     --model $weight_path \
@@ -398,17 +421,29 @@ nohup python -m vllm.entrypoints.openai.api_server \
     --trust-remote-code \
     --gpu-memory-utilization 0.85 \
     --enable-prefix-caching \
-    --speculative-config '{"num_speculative_tokens": 7, "method": "dspark", "model":"/hpfs/huawei-2607/shangxt/Telecom-29B/telecom_80w_no_thinking_0910_8_8/checkpoints/checkpoint_best"}' \
-    --compilation-config '{"cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],"cudagraph_mode": "FULL_AND_PIECEWISE"}' \
-    --additional-config '{"enable_cpu_binding": true, "enable_dsa_cp": false, "multistream_overlap_shared_expert": true, "multistream_overlap_gate": true}' \
-    > dspark-baseline-think.txt 2>&1 &
+    --speculative-config '{
+        "num_speculative_tokens": 7,
+        "method": "dspark",
+        "model":"/path/to/your_draft_model"
+    }' \
+    --compilation-config '{
+        "cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],
+        "cudagraph_mode": "FULL_AND_PIECEWISE"
+    }' \
+    --additional-config '{
+        "enable_cpu_binding": true,
+        "enable_dsa_cp": false,
+        "multistream_overlap_shared_expert": true,
+        "multistream_overlap_gate": true
+    }' \
+> dspark.log 2>&1 &
 ```
 
 ### Appendix C: mtp Startup Script `start_mtp.sh`
 
 ```bash
 #!/bin/bash
-export weight_path=/models/xing4_0   # modify to match the actual weight path
+export weight_path="/path/to/your_main_model"
 
 nohup python -m vllm.entrypoints.openai.api_server \
     --model $weight_path \
@@ -422,10 +457,21 @@ nohup python -m vllm.entrypoints.openai.api_server \
     --trust-remote-code \
     --gpu-memory-utilization 0.6 \
     --enable-prefix-caching \
-    --speculative-config '{"num_speculative_tokens": 2, "method": "mtp"}' \
-    --additional-config '{"enable_cpu_binding": true, "enable_dsa_cp": false, "multistream_overlap_shared_expert": true, "multistream_overlap_gate": true}' \
-    --compilation-config '{"cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],"cudagraph_mode": "FULL_AND_PIECEWISE"}' \
-    > mtp-9.txt 2>&1 &
+    --speculative-config '{
+        "num_speculative_tokens": 2,
+        "method": "mtp"
+    }' \
+    --additional-config '{
+        "enable_cpu_binding": true,
+        "enable_dsa_cp": false,
+        "multistream_overlap_shared_expert": true,
+        "multistream_overlap_gate": true
+    }' \
+    --compilation-config '{
+        "cudagraph_capture_sizes": [1,3,6,9,18,36,65,129,257,384,513,1026,2049],
+        "cudagraph_mode": "FULL_AND_PIECEWISE"
+    }' \
+> mtp.log 2>&1 &
 ```
 
 ### Appendix D: Test Script `test_api.sh`

@@ -137,7 +137,7 @@ print(answer)
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput, low-latency LLM inference and serving engine that provides an OpenAI-compatible API out of the box.
 
 > [!TIP]
-> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md).
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and deploy the service with Docker. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md).
 
 ```shell
 vllm serve ${MODEL_PATH} \
@@ -148,7 +148,8 @@ vllm serve ${MODEL_PATH} \
     --trust-remote-code \
     --max-model-len 262144 \
     --gpu-memory-utilization 0.90 \
-    --max-num-seqs 32 \
+    --max-num-seqs 4 \
+    --enable-auto-tool-choice \
     --reasoning-parser xing4 \
     --tool-call-parser xing4 \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
@@ -161,7 +162,7 @@ Once launched, the OpenAI-compatible API is available at `http://localhost:8000/
 [SGLang](https://github.com/sgl-project/sglang) is a high-performance serving framework for large language models and vision-language models.
 
 > [!TIP]
-> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and deploy the service with Docker. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \
@@ -172,7 +173,7 @@ sglang serve --model-path ${MODEL_PATH} \
    --tp-size 2 \
    --context-length 262144 \
    --mem-fraction-static 0.90 \
-   --max-running-requests 32 \
+   --max-running-requests 4 \
    --reasoning-parser xing4 \
    --tool-call-parser xing4 \
    --speculative-algorithm EAGLE

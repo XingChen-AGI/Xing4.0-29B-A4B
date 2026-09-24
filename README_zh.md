@@ -188,7 +188,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 [vLLM](https://github.com/vllm-project/vllm) 是高吞吐、低延迟的 LLM 推理与服务引擎，可一键启动 OpenAI 兼容的 API 服务。
 
 > [!TIP]
-> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md)。
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 部署服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md)。
 
 
 ```shell
@@ -200,7 +200,8 @@ vllm serve ${MODEL_PATH} \
     --trust-remote-code \
     --max-model-len 262144 \
     --gpu-memory-utilization 0.90 \
-    --max-num-seqs 32 \
+    --max-num-seqs 4 \
+    --enable-auto-tool-choice \
     --reasoning-parser xing4 \
     --tool-call-parser xing4 \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
@@ -213,7 +214,7 @@ vllm serve ${MODEL_PATH} \
 [SGLang](https://github.com/sgl-project/sglang) 是面向大语言模型与视觉语言模型的高性能服务框架。
 
 > [!TIP]
-> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 部署服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \
@@ -224,7 +225,7 @@ sglang serve --model-path ${MODEL_PATH} \
    --tp-size 2 \
    --context-length 262144 \
    --mem-fraction-static 0.90 \
-   --max-running-requests 32 \
+   --max-running-requests 4 \
    --reasoning-parser xing4 \
    --tool-call-parser xing4 \
    --speculative-algorithm EAGLE

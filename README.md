@@ -131,14 +131,14 @@ print(answer)
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> We recommend deploying with these images following: [vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
+> We recommend deploying with these images following: [vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) | [vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
 
 #### vLLM
 
 [vLLM](https://github.com/vllm-project/vllm) is a high-throughput, low-latency LLM inference and serving engine that provides an OpenAI-compatible API out of the box.
 
 > [!TIP]
-> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLm/xing4.0_vllm_en.md).
+> You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) | [Xing4.0 vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md).
 
 ```shell
 vllm serve ${MODEL_PATH} \

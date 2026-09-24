@@ -181,7 +181,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> 推荐通过以下文档使用镜像完成部署：[vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
+> 推荐通过以下文档使用镜像完成部署：[vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md) | [vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
 
 
 #### vLLM
@@ -189,7 +189,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 [vLLM](https://github.com/vllm-project/vllm) 是高吞吐、低延迟的 LLM 推理与服务引擎，可一键启动 OpenAI 兼容的 API 服务。
 
 > [!TIP]
-> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLm/xing4.0_vllm.md)。
+> 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md) | [Xing4.0 vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md)。
 
 
 ```shell

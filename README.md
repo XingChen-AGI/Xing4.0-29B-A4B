@@ -150,8 +150,8 @@ vllm serve ${MODEL_PATH} \
     --gpu-memory-utilization 0.90 \
     --max-num-seqs 4 \
     --enable-auto-tool-choice \
-    --reasoning-parser xing4 \
-    --tool-call-parser xing4 \
+    --reasoning-parser xing4_0 \
+    --tool-call-parser xing4_0 \
     --speculative-config '{"method":"mtp", "num_speculative_tokens": 1}'
 ```
 
@@ -174,8 +174,8 @@ sglang serve --model-path ${MODEL_PATH} \
    --context-length 262144 \
    --mem-fraction-static 0.90 \
    --max-running-requests 4 \
-   --reasoning-parser xing4 \
-   --tool-call-parser xing4 \
+   --reasoning-parser xing4_0 \
+   --tool-call-parser xing4_0 \
    --speculative-algorithm EAGLE
 ```
 

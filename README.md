@@ -70,16 +70,16 @@ We systematically evaluated Xing4.0-29B-A4B across a range of representative ben
 
 
 | Benchmark              | Xing4.0-29B-A4B | Gemma4-26B-A4B | Qwen3.6-35B-A3B |
-|------------------------|-------------------|----------------|-----------------|
-| IFBench                | 69.67             | 72.67          | 65.50           |
-| AIME2026               | 90.00             | 88.30          | 92.70           |
-| AA.LCR                 | 61.00             | 66.00          | 62.00           |
-| Tau3-Bench             | 64.63             | 58.90          | 67.20           |
-| Claw-Eval              | 76.55             | 71.49          | 74.54           |
-| SWE-bench Verified     | 75.00             | 53.00          | 76.00           |
-| Terminal-Bench 2.1     | 57.50             | 30.00          | 51.50           |
-| SWE-bench Multilingual | 66.00             | 51.00          | 67.20           |
-| DeepresearchBII        | 60.80             | 39.30          | 59.70           |
+|------------------------|-----------------|----------------|-----------------|
+| IFBench                | 69.67           | <mark>**72.67**</mark> | 65.50 |
+| AIME2026               | 90.00           | 88.30          | <mark>**92.70**</mark> |
+| AA.LCR                 | 61.00           | <mark>**66.00**</mark> | 62.00 |
+| Tau3-Bench             | 64.63           | 58.90          | <mark>**67.20**</mark> |
+| Claw-Eval              | <mark>**76.55**</mark> | 71.49 | 74.54 |
+| SWE-bench Verified     | 75.00           | 53.00          | <mark>**76.00**</mark> |
+| Terminal-Bench 2.1     | <mark>**57.50**</mark> | 30.00 | 51.50 |
+| SWE-bench Multilingual | 66.00           | 51.00          | <mark>**67.20**</mark> |
+| DeepresearchBII        | <mark>**60.80**</mark> | 39.30 | 59.70 |
 
 
 # Quickstart

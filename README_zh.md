@@ -168,12 +168,13 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 
 ### 服务化推理
 > [!NOTE]
-> Xing4.0 模型的适配代码已向以下推理框架提交 Pull Request，目前**尚未合入主分支**。在 PR 合入之前，请从对应 PR 分支安装以启用 Xing4.0 支持。
+> vLLM 的适配代码以**开源插件**方式发布，无需修改 vLLM 源码即可启用 Xing4.0 支持：[XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin)。
+>
+> 其余推理框架的适配代码已提交 Pull Request，目前**尚未合入主分支**。在 PR 合入之前，请从对应 PR 分支安装以启用 Xing4.0 支持。
 >
 > | 框架 | Pull Request | 状态 | commit hash |
 > |------|-------------|------|----------------|
 > | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | 待合入 | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
-> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | 待合入 | 25aa52a29131753c10e56528d3fa0c4464cead63 |
 > | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入 | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
 > | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | 待合入 | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
 > | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入 | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
@@ -186,7 +187,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> 推荐通过以下文档使用镜像完成部署：[vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md) | [vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
+> 推荐通过以下文档完成部署：[vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md)（预编译镜像） | [vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)（开源插件） | [vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
 
 
 #### vLLM
@@ -195,6 +196,8 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 
 > [!TIP]
 > 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md) | [Xing4.0 vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md)。
+>
+> 也可以 vLLM 官方镜像 `vllm/vllm-openai` 为基础环境，通过开源插件 [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin) 部署，无需修改 vLLM 源码。具体步骤请参考 [Xing4.0 vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)。
 
 
 ```shell

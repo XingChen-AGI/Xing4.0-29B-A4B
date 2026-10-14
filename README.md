@@ -118,12 +118,13 @@ print(answer)
 
 ### Serving
 > [!NOTE]
-> Xing4.0 model support has been submitted to the following inference frameworks via pull requests, which are currently under review and **not yet merged into their main branches**. Before the PRs are merged, please install from the corresponding PR branch to enable Xing4.0 support.
+> vLLM support is released as an **open-source plugin**, enabling Xing4.0 support without modifying the vLLM source tree: [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin).
+>
+> Support for the remaining inference frameworks has been submitted via pull requests, which are currently under review and **not yet merged into their main branches**. Before they are merged, please install from the corresponding PR branch to enable Xing4.0 support.
 >
 > | Framework | Pull Request | Status | Commit Hash |
 > |-----------|-------------|--------|----------------|
 > | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | Pending | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
-> | vLLM | [vllm-project/vllm#57135](https://github.com/vllm-project/vllm/pull/57135) | Pending | 25aa52a29131753c10e56528d3fa0c4464cead63 |
 > | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
 > | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | Pending | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
 > | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
@@ -136,7 +137,7 @@ print(answer)
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> We recommend deploying with these images following: [vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) | [vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
+> We recommend deploying following: [vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) (prebuilt image) | [vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md) (open-source plugin) | [vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
 
 #### vLLM
 
@@ -144,6 +145,8 @@ print(answer)
 
 > [!TIP]
 > You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) | [Xing4.0 vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md).
+>
+> Alternatively, use the official vLLM image `vllm/vllm-openai` as the base environment and deploy through the open-source plugin [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin), without modifying the vLLM source tree. For detailed steps, see the [Xing4.0 vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md).
 
 ```shell
 vllm serve ${MODEL_PATH} \

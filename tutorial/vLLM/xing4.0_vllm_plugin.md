@@ -11,7 +11,7 @@
 - 启动参数说明与推理参数建议
 - 常见问题排查
 
-　　Xing4.0 的 vLLM 适配代码以**开源插件**方式发布，托管于 [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin)。插件以 Python 包形式分发，通过 Python entry point 注册到 `vllm.general_plugins` 组，由 vLLM 在进程启动时自动加载，可直接配合 vLLM 官方镜像使用，无需改动 vLLM 源码树，也便于独立升级与维护。插件**不包含自定义 CUDA 内核，也不需要单独编译**，其实现复用 vLLM 既有的运行期算子（包括 `vllm.model_executor.layers.mhc`）。
+　　Xing4.0 的 vLLM 适配代码以**开源插件**方式发布，托管于 [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin)。插件以 Python 包形式分发，通过 Python entry point 注册到 `vllm.general_plugins` 组，由 vLLM 在进程启动时自动加载，可直接配合 vLLM 官方镜像使用，无需改动 vLLM 源码树，也便于独立升级与维护。插件**不包含自定义 CUDA 内核，也不需要单独编译**，其实现复用 vLLM 既有的运行期算子（包括 `vllm.model_executor.layers.mhc`）。
 
 > [!NOTE]
 > 插件注册的内容包括：`Xing4_0ForCausalLM` 模型实现、`xing4_0` 模型配置（复用 vLLM 的 MLA + MoE 配置基础设施）、`xing4_0` 思维链解析器（reasoning parser）、`xing4_0` 工具调用解析器（tool-call parser），以及 `xing4_0` 投机解码（MTP）与 MLA 识别支持。
@@ -71,7 +71,7 @@ modelscope download \
 　　第一步，获取插件源码，供挂载进容器使用：
 
 ```bash
-git clone https://github.com/XingChen-AGI/Xing4.0-plugin.git
+git clone https://github.com/XingChen-AGI/xing4-vllm-plugin.git
 ```
 
 　　第二步，启动容器（以 bash 作为入口点并保持运行），挂载模型目录与插件仓库，并暴露 API 端口：
@@ -84,7 +84,7 @@ docker run -d \
   -p 8000:8000 \
   --entrypoint /bin/bash \
   -v /yourpath/models/Xing4.0-29B-A4B:/models/Xing4.0-29B-A4B \
-  -v /yourpath/Xing4.0-plugin:/workspace/Xing4.0-plugin \
+  -v /yourpath/xing4-vllm-plugin:/workspace/xing4-vllm-plugin \
   vllm/vllm-openai:latest \
   -c "sleep infinity"
 ```
@@ -94,7 +94,7 @@ docker run -d \
 ```bash
 docker exec -it xing4-vllm-plugin bash
 
-pip install -e /workspace/Xing4.0-plugin --no-deps
+pip install -e /workspace/xing4-vllm-plugin --no-deps
 ```
 
 　　第四步，验证 entry point 对容器内的解释器可见：
@@ -260,7 +260,7 @@ curl http://localhost:8000/v1/chat/completions \
 
 　　插件依赖 vLLM 的内部运行期 API，`TESTED_VLLM` 常量记录了移植所基于的 vLLM 版本。升级 vLLM（即更换镜像 tag）后建议：
 
-- 在容器内的插件仓库目录 `/workspace/Xing4.0-plugin` 下重新运行插件自带的冒烟测试（无需 GPU 与模型权重），确认注册入口、MTP/MLA 补丁与解析器功能正常：
+- 在容器内的插件仓库目录 `/workspace/xing4-vllm-plugin` 下重新运行插件自带的冒烟测试（无需 GPU 与模型权重），确认注册入口、MTP/MLA 补丁与解析器功能正常：
 
 ```bash
 python -m pytest tests/test_smoke.py -q

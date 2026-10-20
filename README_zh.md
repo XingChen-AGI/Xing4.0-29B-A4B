@@ -168,7 +168,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 
 ### 服务化推理
 > [!NOTE]
-> vLLM 的适配代码以**开源插件**方式发布，无需修改 vLLM 源码即可启用 Xing4.0 支持：[XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin)。
+> vLLM 与 SGLang 的适配代码以**开源插件**方式发布，无需修改对应框架源码即可启用 Xing4.0 支持：[XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin)（vLLM）、[XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin)（SGLang）。
 >
 > 其余推理框架的适配代码已提交 Pull Request，目前**尚未合入主分支**。在 PR 合入之前，请从对应 PR 分支安装以启用 Xing4.0 支持。
 >
@@ -187,7 +187,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> 推荐通过以下文档完成部署：[vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md)（预编译镜像） | [vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)（开源插件） | [vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)
+> 推荐通过以下文档完成部署：[vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md)（预编译镜像） | [vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)（开源插件） | [vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md) | [SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md) | [SGLang 插件部署文档](./tutorial/SGLang/xing4.0_sglang_plugin.md)（开源插件）
 
 
 #### vLLM
@@ -197,7 +197,7 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 > [!TIP]
 > 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0`，通过 Docker 一键启动服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 vLLM 部署文档](./tutorial/vLLM/xing4.0_vllm.md) | [Xing4.0 vLLM-Ascend 部署文档](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend.md)。
 >
-> 也可以 vLLM 官方镜像 `vllm/vllm-openai` 为基础环境，通过开源插件 [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin) 部署，无需修改 vLLM 源码。具体步骤请参考 [Xing4.0 vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)。
+> 也可以 vLLM 官方镜像 `vllm/vllm-openai` 为基础环境，通过开源插件 [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin) 部署，无需修改 vLLM 源码。具体步骤请参考 [Xing4.0 vLLM 插件部署文档](./tutorial/vLLM/xing4.0_vllm_plugin.md)。
 
 
 ```shell
@@ -224,6 +224,8 @@ vllm serve ${MODEL_PATH} \
 
 > [!TIP]
 > 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 部署服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
+>
+> 也可以原生 SGLang 环境为基础环境，通过开源插件 [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) 部署，无需修改 SGLang 源码。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 插件部署文档](./tutorial/SGLang/xing4.0_sglang_plugin.md)。
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \

@@ -11,7 +11,7 @@
 - Startup parameter descriptions and inference parameter recommendations
 - Troubleshooting
 
-　　The vLLM adaptation code for Xing4.0 is released as an **open-source plugin**, hosted at [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin). The plugin is distributed as a Python package and registers itself through a Python entry point in the `vllm.general_plugins` group, so vLLM loads it automatically at process startup. It works with the official vLLM image, requires no changes to the vLLM source tree, and can be upgraded and maintained independently. The plugin **contains no custom CUDA kernels and needs no separate build**; its implementation reuses runtime operators already present in vLLM (including `vllm.model_executor.layers.mhc`).
+　　The vLLM adaptation code for Xing4.0 is released as an **open-source plugin**, hosted at [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin). The plugin is distributed as a Python package and registers itself through a Python entry point in the `vllm.general_plugins` group, so vLLM loads it automatically at process startup. It works with the official vLLM image, requires no changes to the vLLM source tree, and can be upgraded and maintained independently. The plugin **contains no custom CUDA kernels and needs no separate build**; its implementation reuses runtime operators already present in vLLM (including `vllm.model_executor.layers.mhc`).
 
 > [!NOTE]
 > The plugin registers: the `Xing4_0ForCausalLM` model implementation, the `xing4_0` model configuration (reusing vLLM's MLA + MoE configuration infrastructure), the `xing4_0` reasoning parser, the `xing4_0` tool-call parser, and `xing4_0` speculative decoding (MTP) plus MLA detection support.
@@ -71,7 +71,7 @@ modelscope download \
 　　Step 1: get the plugin source code, so that it can be mounted into the container:
 
 ```bash
-git clone https://github.com/XingChen-AGI/Xing4.0-plugin.git
+git clone https://github.com/XingChen-AGI/xing4-vllm-plugin.git
 ```
 
 　　Step 2: start a container (with bash as the entry point, kept running), mounting the model directory and the plugin repository and exposing the API port:
@@ -84,7 +84,7 @@ docker run -d \
   -p 8000:8000 \
   --entrypoint /bin/bash \
   -v /yourpath/models/Xing4.0-29B-A4B:/models/Xing4.0-29B-A4B \
-  -v /yourpath/Xing4.0-plugin:/workspace/Xing4.0-plugin \
+  -v /yourpath/xing4-vllm-plugin:/workspace/xing4-vllm-plugin \
   vllm/vllm-openai:latest \
   -c "sleep infinity"
 ```
@@ -94,7 +94,7 @@ docker run -d \
 ```bash
 docker exec -it xing4-vllm-plugin bash
 
-pip install -e /workspace/Xing4.0-plugin --no-deps
+pip install -e /workspace/xing4-vllm-plugin --no-deps
 ```
 
 　　Step 4: verify that the entry point is visible to the interpreter inside the container:
@@ -260,7 +260,7 @@ curl http://localhost:8000/v1/chat/completions \
 
 　　The plugin depends on vLLM's internal runtime APIs, and the `TESTED_VLLM` constant records the vLLM version the port is based on. After upgrading vLLM (i.e. switching the image tag):
 
-- Re-run the plugin's own smoke tests (no GPU or model weights required) from the plugin repository inside the container, at `/workspace/Xing4.0-plugin`, to confirm that the registration entry point, the MTP/MLA patches, and the parsers work as expected:
+- Re-run the plugin's own smoke tests (no GPU or model weights required) from the plugin repository inside the container, at `/workspace/xing4-vllm-plugin`, to confirm that the registration entry point, the MTP/MLA patches, and the parsers work as expected:
 
 ```bash
 python -m pytest tests/test_smoke.py -q

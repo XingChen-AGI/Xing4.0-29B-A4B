@@ -118,7 +118,7 @@ print(answer)
 
 ### Serving
 > [!NOTE]
-> vLLM support is released as an **open-source plugin**, enabling Xing4.0 support without modifying the vLLM source tree: [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin).
+> vLLM and SGLang support are released as **open-source plugins**, enabling Xing4.0 support without modifying their source trees: [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin) for vLLM and [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) for SGLang.
 >
 > Support for the remaining inference frameworks has been submitted via pull requests, which are currently under review and **not yet merged into their main branches**. Before they are merged, please install from the corresponding PR branch to enable Xing4.0 support.
 >
@@ -137,7 +137,7 @@ print(answer)
 > | vLLM-Ascend | `quay.io/xingchen-agi/xingchen-inference-vllm-ascend:v0.26.0rc1-xing4_0` |
 > | SGLang | `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` |
 >
-> We recommend deploying following: [vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) (prebuilt image) | [vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md) (open-source plugin) | [vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md)
+> We recommend deploying following: [vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) (prebuilt image) | [vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md) (open-source plugin) | [vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md) | [SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md) | [SGLang Plugin Deployment Guide](./tutorial/SGLang/xing4.0_sglang_plugin_en.md) (open-source plugin)
 
 #### vLLM
 
@@ -146,7 +146,7 @@ print(answer)
 > [!TIP]
 > You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-vllm:v0.29.1rc1-xing4_0` and launch the service with Docker in one command. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 vLLM Deployment Guide](./tutorial/vLLM/xing4.0_vllm_en.md) | [Xing4.0 vLLM-Ascend Deployment Guide](./tutorial/vLLM-Ascend/xing4.0_vllm_ascend_en.md).
 >
-> Alternatively, use the official vLLM image `vllm/vllm-openai` as the base environment and deploy through the open-source plugin [XingChen-AGI/Xing4.0-plugin](https://github.com/XingChen-AGI/Xing4.0-plugin), without modifying the vLLM source tree. For detailed steps, see the [Xing4.0 vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md).
+> Alternatively, use the official vLLM image `vllm/vllm-openai` as the base environment and deploy through the open-source plugin [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin), without modifying the vLLM source tree. For detailed steps, see the [Xing4.0 vLLM Plugin Deployment Guide](./tutorial/vLLM/xing4.0_vllm_plugin_en.md).
 
 ```shell
 vllm serve ${MODEL_PATH} \
@@ -172,6 +172,8 @@ Once launched, the OpenAI-compatible API is available at `http://localhost:8000/
 
 > [!TIP]
 > You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and deploy the service with Docker. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
+>
+> Alternatively, use a stock SGLang installation as the base environment and deploy through the open-source plugin [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin), without modifying the SGLang source tree. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Plugin Deployment Guide](./tutorial/SGLang/xing4.0_sglang_plugin_en.md).
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \

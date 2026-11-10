@@ -45,10 +45,11 @@
 - **Agent-Oriented Architecture**: Built on the mHC + MLA + MTP architecture, supporting multi-step planning, tool calling, and complex reasoning chain execution, ensuring task coherence and execution stability under long contexts.
 - **Deep Co-optimization with Ascend NPU**: Adapted for Ascend 910C clusters using MindSpore/MindFormers, including feature adaptation for mHC, cross-framework numerical alignment, and fused operator development, enabling stable and efficient training on the Ascend platform.
 - **Significant Training Efficiency Gains**: Through multi-level co-optimization — including fine-grained MoE communication optimization, selective recomputation, DVM automatic graph-operator fusion, and Ascend C mHC fused operators — overall training throughput was improved by approximately **96%** over out-of-the-box performance.
-- **Full Open-Source Ecosystem Compatibility**: Supports LLaMA-Factory and MindFormers for fine-tuning; SGLang, vLLM, and KTransformers for inference and deployment; with targeted adaptation and format alignment for agent frameworks such as OpenCode, Claude Code, OpenClaw, and Hermes, enabling seamless integration into existing workflows. On the hardware side, multi-chip platform adaptation has been completed via BAAI FlagOS, supporting cross-architecture one-click deployment.
+- **Full Open-Source Ecosystem Compatibility**: Fine-tuning via ms-swift, LLaMA-Factory, and MindFormers (ms-swift [#10275](https://github.com/modelscope/ms-swift/pull/10275) and LLaMA-Factory [#10754](https://github.com/hiyouga/LlamaFactory/pull/10754) merged upstream); serving via SGLang (native support merged into the mainline, [#39793](https://github.com/sgl-project/sglang/pull/39793)) and vLLM (via the official plugin); local GGUF inference via llama.cpp (native support merged into the mainline, [#31589](https://github.com/ggml-org/llama.cpp/pull/31589), b12174+); with targeted adaptation and format alignment for agent frameworks such as OpenCode, Claude Code, OpenClaw, and Hermes, enabling seamless integration into existing workflows. On the hardware side, multi-chip platform adaptation has been completed via BAAI FlagOS, supporting cross-architecture one-click deployment.
 - **Easy Adaptation for Domain-Specific Scenarios**: Well-suited for downstream task fine-tuning, allowing lightweight customization on proprietary data for vertical domains such as intent classification, table understanding, contract auditing, and knowledge-based QA, enabling rapid domain capability development and deployment at low cost.
 
 # News
+- 2026-11-05 Xing4.0 native support merged into the **SGLang mainline** ([sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793)) and the **llama.cpp mainline** ([ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589), b12174+, GGUF on CPU / CUDA)
 - 2026-09-17 Open-sourced **Xing4.0-29B-A4B** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B)]
 - 2026-09-17 Open-sourced **Xing4.0-29B-A4B-FP8** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-FP8) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B-FP8) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B-FP8)] and **Xing4.0-29B-A4B-GGUF** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-GGUF) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B-GGUF) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B-GGUF)]
 
@@ -69,17 +70,17 @@ We systematically evaluated Xing4.0-29B-A4B across a range of representative ben
 - **General Agent**: Xing4.0-29B-A4B demonstrates strong performance on Claw-Eval (76.55), DeepresearchBII (60.80), and Tau3-Bench (64.63). On Claw-Eval (76.55), it outperforms both Qwen3.6-35B-A3B (74.54) and Gemma4-26B-A4B (71.49). On DeepresearchBII (60.80), it surpasses Qwen3.6-35B-A3B (59.70) and Gemma4-26B-A4B (39.30).
 
 
-| Benchmark              | Xing4.0-29B-A4B | Gemma4-26B-A4B | Qwen3.6-35B-A3B |
-|------------------------|-----------------|----------------|-----------------|
-| IFBench                | 69.67           | <mark>**72.67**</mark> | 65.50 |
-| AIME2026               | 90.00           | 88.30          | <mark>**92.70**</mark> |
-| AA.LCR                 | 61.00           | <mark>**66.00**</mark> | 62.00 |
-| Tau3-Bench             | 64.63           | 58.90          | <mark>**67.20**</mark> |
-| Claw-Eval              | <mark>**76.55**</mark> | 71.49 | 74.54 |
-| SWE-bench Verified     | 75.00           | 53.00          | <mark>**76.00**</mark> |
-| Terminal-Bench 2.1     | <mark>**57.50**</mark> | 30.00 | 51.50 |
-| SWE-bench Multilingual | 66.00           | 51.00          | <mark>**67.20**</mark> |
-| DeepresearchBII        | <mark>**60.80**</mark> | 39.30 | 59.70 |
+| Benchmark              | Xing4.0-29B-A4B        | Gemma4-26B-A4B         | Qwen3.6-35B-A3B        |
+| ---------------------- | ---------------------- | ---------------------- | ---------------------- |
+| IFBench                | 69.67                  | <mark>**72.67**</mark> | 65.50                  |
+| AIME2026               | 90.00                  | 88.30                  | <mark>**92.70**</mark> |
+| AA.LCR                 | 61.00                  | <mark>**66.00**</mark> | 62.00                  |
+| Tau3-Bench             | 64.63                  | 58.90                  | <mark>**67.20**</mark> |
+| Claw-Eval              | <mark>**76.55**</mark> | 71.49                  | 74.54                  |
+| SWE-bench Verified     | 75.00                  | 53.00                  | <mark>**76.00**</mark> |
+| Terminal-Bench 2.1     | <mark>**57.50**</mark> | 30.00                  | 51.50                  |
+| SWE-bench Multilingual | 66.00                  | 51.00                  | <mark>**67.20**</mark> |
+| DeepresearchBII        | <mark>**60.80**</mark> | 39.30                  | 59.70                  |
 
 
 # Quickstart
@@ -118,16 +119,18 @@ print(answer)
 
 ### Serving
 > [!NOTE]
-> vLLM and SGLang support are released as **open-source plugins**, enabling Xing4.0 support without modifying their source trees: [XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin) for vLLM and [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) for SGLang.
+> **SGLang support has been merged into the mainline** ([sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793), merged 2026-11-05) — recent SGLang mainline releases serve Xing4.0 natively. The [open-source plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) is still available for earlier versions, and vLLM support is released as an **open-source plugin** ([XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin)), enabling Xing4.0 support without modifying their source trees.
 >
-> Support for the remaining inference frameworks has been submitted via pull requests, which are currently under review and **not yet merged into their main branches**. Before they are merged, please install from the corresponding PR branch to enable Xing4.0 support.
+> **llama.cpp support has been merged into the mainline** ([ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589), merged 2026-11-05) — GGUF weights from [Xing4.0-29B-A4B-GGUF](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-GGUF) can be served with **llama.cpp b12174+** on CPU / CUDA.
 >
-> | Framework | Pull Request | Status | Commit Hash |
-> |-----------|-------------|--------|----------------|
-> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | Pending | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
-> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
-> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | Pending | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
-> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
+> The remaining inference framework adaptations have been submitted via pull requests, which are currently under review and **not yet merged into their main branches**. Before they are merged, please install from the corresponding PR branch to enable Xing4.0 support.
+>
+> | Framework | Pull Request | Status | Notes |
+> |-----------|-------------|--------|-------|
+> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | **Merged** (2026-11-05) | Native mainline support; plugin available for earlier versions |
+> | llama.cpp | [ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589) | **Merged** (2026-11-05) | Native mainline support (b12174+), GGUF on CPU / CUDA |
+> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | Pending (install from commit `1b03b640fa93dc956f482b9d74f7124f14b28d71`) | Under NVIDIA review |
+> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | Pending (install from commit `f2f0e3a8c65cbb47249d429c6ca488a8652963c8`) | Needs rebase |
 >
 > For quick deployment, we also provide prebuilt Docker images that already integrate the corresponding PRs, so no source build is required:
 >
@@ -173,7 +176,7 @@ Once launched, the OpenAI-compatible API is available at `http://localhost:8000/
 > [!TIP]
 > You can directly pull the prebuilt image `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0` and deploy the service with Docker. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Deployment Guide](./tutorial/SGLang/xing4.0_sglang_en.md).
 >
-> Alternatively, use a stock SGLang installation as the base environment and deploy through the open-source plugin [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin), without modifying the SGLang source tree. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Plugin Deployment Guide](./tutorial/SGLang/xing4.0_sglang_plugin_en.md).
+> Since [#39793](https://github.com/sgl-project/sglang/pull/39793) was merged (2026-11-05), recent SGLang mainline releases serve Xing4.0 natively — no plugin required. For earlier versions, deploy through the open-source plugin [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin), without modifying the SGLang source tree. For detailed steps, parameter descriptions, and call examples, see the [Xing4.0 SGLang Plugin Deployment Guide](./tutorial/SGLang/xing4.0_sglang_plugin_en.md).
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \

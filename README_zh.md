@@ -45,10 +45,11 @@
 - **面向 Agent 的架构设计**：采用 mHC + MLA + MTP 架构，支持多步骤规划、工具调用与复杂推理链路执行，保障长上下文下任务连贯与执行稳定。
 - **国产算力深度协同**：面向昇腾 910C 集群，基于 MindSpore/MindFormers 完成 mHC 等新特性适配、跨框架精度对齐及融合算子开发，实现国产算力平台上的稳定高效训练。
 - **训练效率大幅提升**：通过细粒度 MoE 通信优化、选择性重计算、DVM 图算自动融合、Ascend C mHC 融合算子等多层次协同优化，整体训练吞吐较开箱性能**提升约 96%**。
-- **开源生态全面兼容**：训练微调支持 LLaMA-Factory、MindFormers；推理部署支持 SGLang、vLLM、KTransformers；针对 OpenCode、Claude Code、OpenClaw、Hermes 等 Agent 框架进行定向适配与格式对齐，可直接接入现有工作流。算力方面，基于智源 FlagOS 完成多款 AI 芯片平台适配，支持跨架构一键部署。
+- **开源生态全面兼容**：训练微调支持 ms-swift、LLaMA-Factory、MindFormers（ms-swift [#10275](https://github.com/modelscope/ms-swift/pull/10275)、LLaMA-Factory [#10754](https://github.com/hiyouga/LlamaFactory/pull/10754) 已合入上游主线）；推理部署支持 SGLang（原生支持已合入主线 [#39793](https://github.com/sgl-project/sglang/pull/39793)）、vLLM（官方插件）；本地 GGUF 推理支持 llama.cpp（原生支持已合入主线 [#31589](https://github.com/ggml-org/llama.cpp/pull/31589)，b12174+）；针对 OpenCode、Claude Code、OpenClaw、Hermes 等 Agent 框架进行定向适配与格式对齐，可直接接入现有工作流。算力方面，基于智源 FlagOS 完成多款 AI 芯片平台适配，支持跨架构一键部署。
 - **低资源场景易于适配**：模型具备良好的下游任务微调能力，可面向私域数据进行轻量化定制，适用于意图识别、表格理解、合同审计、知识问答等垂直场景，以较低成本实现领域能力的快速构建与落地。
 
 # 最新动态
+- 2026-11-05 Xing4.0 原生支持已合入 **SGLang 主线**（[sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793)）与 **llama.cpp 主线**（[ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589)，b12174+，GGUF 可在 CPU / CUDA 推理）
 - 2026-09-17 开源 **Xing4.0-29B-A4B** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B)]
 - 2026-09-17 开源 **Xing4.0-29B-A4B-FP8** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-FP8) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B-FP8) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B-FP8)] and **Xing4.0-29B-A4B-GGUF** [[HuggingFace Hub](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-GGUF) | [ModelScope](https://modelscope.cn/models/XingChen-AGI/Xing4.0-29B-A4B-GGUF) | [Modelers](https://modelers.cn/models/XingChen-AGI/Xing4.0-29B-A4B-GGUF)]
 # 模型
@@ -168,16 +169,18 @@ $$时间 = 1 \div \frac{37}{288} = \frac{288}{37} \text{ 小时}$$
 
 ### 服务化推理
 > [!NOTE]
-> vLLM 与 SGLang 的适配代码以**开源插件**方式发布，无需修改对应框架源码即可启用 Xing4.0 支持：[XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin)（vLLM）、[XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin)（SGLang）。
+> **SGLang 原生支持已合入官方主线**（[sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793)，2026-11-05 合入），新版 SGLang 主线可直接服务化 Xing4.0；面向旧版本的[开源插件](https://github.com/XingChen-AGI/xing4-sglang-plugin)仍然可用。vLLM 的适配代码以**开源插件**方式发布，无需修改对应框架源码即可启用 Xing4.0 支持：[XingChen-AGI/xing4-vllm-plugin](https://github.com/XingChen-AGI/xing4-vllm-plugin)（vLLM）。
+>
+> **llama.cpp 原生支持已合入官方主线**（[ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589)，2026-11-05 合入），[Xing4.0-29B-A4B-GGUF](https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B-GGUF) 权重可用 **llama.cpp b12174+** 在 CPU / CUDA 上推理。
 >
 > 其余推理框架的适配代码已提交 Pull Request，目前**尚未合入主分支**。在 PR 合入之前，请从对应 PR 分支安装以启用 Xing4.0 支持。
 >
-> | 框架 | Pull Request | 状态 | commit hash |
-> |------|-------------|------|----------------|
-> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | 待合入 | f22026fa0cb20c661614ded7f3b0e81a844b1906 |
-> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入 | 1b03b640fa93dc956f482b9d74f7124f14b28d71 |
-> | llama.cpp | [ggml-org/llama.cpp#29012](https://github.com/ggml-org/llama.cpp/pull/29012) | 待合入 | 63c16fb9797d00f13d70b5a618b4deb08953aef3 |
-> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入 | f2f0e3a8c65cbb47249d429c6ca488a8652963c8 |
+> | 框架 | Pull Request | 状态 | 说明 |
+> |------|-------------|------|------|
+> | SGLang | [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) | **已合入**（2026-11-05） | 主线原生支持；旧版本可用插件 |
+> | llama.cpp | [ggml-org/llama.cpp#31589](https://github.com/ggml-org/llama.cpp/pull/31589) | **已合入**（2026-11-05） | 主线原生支持（b12174+），GGUF 可在 CPU / CUDA 推理 |
+> | TensorRT-LLM | [NVIDIA/TensorRT-LLM#19283](https://github.com/NVIDIA/TensorRT-LLM/pull/19283) | 待合入（可从 commit `1b03b640fa93dc956f482b9d74f7124f14b28d71` 安装） | NVIDIA 审核中 |
+> | KTransformers | [kvcache-ai/ktransformers#2168](https://github.com/kvcache-ai/ktransformers/pull/2168) | 待合入（可从 commit `f2f0e3a8c65cbb47249d429c6ca488a8652963c8` 安装） | 待 rebase |
 >
 > 为方便快速部署，我们同时提供了已集成对应 PR 的预编译 Docker 镜像，无需自行从源码编译：
 >
@@ -225,7 +228,7 @@ vllm serve ${MODEL_PATH} \
 > [!TIP]
 > 可直接拉取预编译镜像 `quay.io/xingchen-agi/xingchen-inference-sglang:v0.5.20.rc1-xing4_0`，通过 Docker 部署服务。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 部署文档](./tutorial/SGLang/xing4.0_sglang.md)。
 >
-> 也可以原生 SGLang 环境为基础环境，通过开源插件 [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) 部署，无需修改 SGLang 源码。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 插件部署文档](./tutorial/SGLang/xing4.0_sglang_plugin.md)。
+> [sgl-project/sglang#39793](https://github.com/sgl-project/sglang/pull/39793) 已于 2026-11-05 合入主线，新版 SGLang 主线环境可直接原生部署 Xing4.0，无需插件。旧版本环境可通过开源插件 [XingChen-AGI/xing4-sglang-plugin](https://github.com/XingChen-AGI/xing4-sglang-plugin) 部署，无需修改 SGLang 源码。具体步骤、参数说明与调用示例请参考 [Xing4.0 SGLang 插件部署文档](./tutorial/SGLang/xing4.0_sglang_plugin.md)。
 
 ```shell
 sglang serve --model-path ${MODEL_PATH} \
